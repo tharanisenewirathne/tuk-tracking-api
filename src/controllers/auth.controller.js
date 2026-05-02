@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
 
 exports.register = (req, res) => {
-    const { username, password, role } = req.body;
+    const { username, password, role, province, district } = req.body;
 
     const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -11,12 +11,12 @@ exports.register = (req, res) => {
         {
             username,
             password: hashedPassword,
-            role
+            role,
+            province,
+            district
         },
-        (err, result) => {
-            if (err) {
-                return res.status(500).json({ error: err });
-            }
+        (err) => {
+            if (err) return res.status(500).json(err);
 
             res.status(201).json({
                 message: "User registered successfully"
@@ -28,11 +28,19 @@ exports.register = (req, res) => {
 exports.login = (req, res) => {
     const { username, password } = req.body;
 
+    // validation
+    if (!username || !password) {
+        return res.status(400).json({ message: "Username and password required" });
+    }
+
     User.findByUsername(username, (err, results) => {
-        if (err) return res.status(500).json(err);
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Internal server error" });
+        }
 
         if (results.length === 0) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(401).json({ message: "Invalid credentials" });
         }
 
         const user = results[0];
@@ -46,7 +54,9 @@ exports.login = (req, res) => {
         const token = jwt.sign(
             {
                 id: user.id,
-                role: user.role
+                role: user.role,
+                province: user.province || null,
+                district: user.district || null
             },
             process.env.JWT_SECRET,
             { expiresIn: "1d" }

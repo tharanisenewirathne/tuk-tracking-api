@@ -5,6 +5,7 @@ const vehicleController = require("../controllers/vehicle.controller");
 
 const verifyToken = require("../middlewares/auth.middleware");
 const authorizeRoles = require("../middlewares/role.middleware");
+const filterByRole = require("../middlewares/dataFilter.middleware");
 
 // CREATE vehicle (only HQ + PROVINCIAL)
 router.post(
@@ -14,18 +15,12 @@ router.post(
     vehicleController.createVehicle
 );
 
-// GET vehicles (all authenticated users)
-router.get(
-    "/",
-    verifyToken,
-    vehicleController.getAllVehicles
-);
 
 // filter by district
-router.get("/district/:district", vehicleController.getByDistrict);
+router.get("/district/:district", verifyToken, vehicleController.getByDistrict);
 
 // filter by province
-router.get("/province/:province", vehicleController.getByProvince);
+router.get("/province/:province", verifyToken, vehicleController.getByProvince);
 
 router.get(
     "/with-latest-location",
@@ -37,6 +32,13 @@ router.get(
     "/district/:district/live",
     verifyToken,
     vehicleController.getDistrictWithLocation
+);
+
+router.get(
+    "/",
+    verifyToken,
+    filterByRole,
+    vehicleController.getAllVehicles
 );
 
 module.exports = router;
