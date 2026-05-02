@@ -21,4 +21,22 @@ router.get(
     vehicleController.getAllVehicles
 );
 
+// filter by district
+router.get("/district/:district", vehicleController.getByDistrict);
+
+// filter by province
+router.get("/province/:province", vehicleController.getByProvince);
+
+router.get(
+    "/with-latest-location",
+    verifyToken,
+    vehicleController.getWithLatestLocation
+);
+
+router.get(
+    "/district/:district/live",
+    verifyToken,
+    vehicleController.getDistrictWithLocation
+);
+
 module.exports = router;
