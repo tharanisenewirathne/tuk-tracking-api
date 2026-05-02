@@ -1,3 +1,4 @@
+const db = require("../config/db");
 const Vehicle = require("../models/vehicle.model");
 
 exports.createVehicle = (req, res) => {
@@ -13,11 +14,31 @@ exports.createVehicle = (req, res) => {
 };
 
 exports.getAllVehicles = (req, res) => {
-    Vehicle.getAll((err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err });
-        }
+    const filter = req.filter;
 
+    let sql = "SELECT * FROM vehicles";
+    let conditions = [];
+    let params = [];
+
+
+    if (filter?.province) {
+        conditions.push("province = ?");
+        params.push(filter.province);
+    }
+
+    if (filter?.district) {
+        conditions.push("district = ?");
+        params.push(filter.district);
+    }
+
+    if (conditions.length > 0) {
+        sql += " WHERE " + conditions.join(" AND ");
+    }
+
+    const db = require("../config/db");
+
+    db.query(sql, params, (err, results) => {
+        if (err) return res.status(500).json(err);
         res.json(results);
     });
 };
