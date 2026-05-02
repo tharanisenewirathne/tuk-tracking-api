@@ -3,6 +3,8 @@ const cors = require("cors");
 
 require("./config/db");
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocs = require("./config/swagger");
 const authRoutes = require("./routes/auth.routes");
 const vehicleRoutes = require("./routes/vehicle.routes");
 const locationRoutes = require("./routes/location.routes");
@@ -13,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 // ROUTES
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/api/auth", authRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/locations", locationRoutes);
