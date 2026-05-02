@@ -8,6 +8,7 @@ const swaggerDocs = require("./config/swagger");
 const authRoutes = require("./routes/auth.routes");
 const vehicleRoutes = require("./routes/vehicle.routes");
 const locationRoutes = require("./routes/location.routes");
+const geographyRoutes = require("./routes/geography.routes");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/api/auth", authRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/locations", locationRoutes);
+app.use("/api/geography", geographyRoutes);
 
 app.get("/", (req, res) => {
     res.send("Tuk-Tuk Tracking API Running...");
