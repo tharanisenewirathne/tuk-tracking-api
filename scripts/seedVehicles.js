@@ -87,10 +87,10 @@ async function seedPoliceStations() {
     //Provincial HQs
     for (let p of provinces) {
         await db.promise().query(
-            "INSERT INTO police_stations (name, type, province)",
-            `VALUES (?, 'PROVINCE', ?)`,
-            [`${p} Provincial HQ`, p]
-        );
+        `INSERT INTO police_stations (name, type, province)
+        VALUES (?, ?, ?)`,
+        [`${p} Provincial HQ`, "PROVINCE", p]
+    );
     }
 
     //District HQs + Stations
