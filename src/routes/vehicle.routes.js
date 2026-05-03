@@ -8,6 +8,33 @@ const authorizeRoles = require("../middlewares/role.middleware");
 const filterByRole = require("../middlewares/dataFilter.middleware");
 
 // CREATE vehicle (only HQ + PROVINCIAL)
+/**
+ * @swagger
+ * /api/vehicles:
+ *   post:
+ *     summary: Create new tuk-tuk vehicle
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - Vehicles
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               registration_number:
+ *                 type: string
+ *               district:
+ *                 type: string
+ *               province:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Vehicle created
+ */
+
 router.post(
     "/",
     verifyToken,
@@ -34,6 +61,22 @@ router.get(
     vehicleController.getDistrictWithLocation
 );
 
+
+/**
+ * @swagger
+ * /api/vehicles:
+ *   get:
+ *     summary: Get vehicles based on user role and geography
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - Vehicles
+ *     responses:
+ *       200:
+ *         description: List of vehicles
+ *       401:
+ *         description: Unauthorized
+ */
 router.get(
     "/",
     verifyToken,
