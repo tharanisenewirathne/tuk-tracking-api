@@ -29,7 +29,7 @@ const filterByRole = require("../middlewares/dataFilter.middleware");
  *         application/json:
  *           schema:
  *             type: object
- *             required: [registration_number, driver_name, phone, district]
+ *             required: [registration_number, driver_name, phone, province, district]
  *             properties:
  *               registration_number:
  *                 type: string
@@ -40,6 +40,9 @@ const filterByRole = require("../middlewares/dataFilter.middleware");
  *               phone:
  *                 type: string
  *                 example: 0712345678
+ *               province:
+ *                 type: string
+ *                 example: Western
  *               district:
  *                 type: string
  *                 example: Colombo

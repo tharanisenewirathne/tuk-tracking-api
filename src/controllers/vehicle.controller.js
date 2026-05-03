@@ -14,15 +14,18 @@ const provinceDistrictMap = {
 };
 
 exports.createVehicle = (req, res) => {
-    Vehicle.create(req.body, (err) => {
+    Vehicle.create(req.body, (err, result) => {
         if (err) {
-            return res.status(500).json({ error: err });
+            console.error("DB ERROR:", err);
+            return res.status(500).json({
+                error: err.sqlMessage || err
+            });
         }
 
         res.status(201).json({
             message: "Vehicle registered successfully",
             vehicle_id: result.insertId,
-            registration_number
+            registration_number: req.body.registration_number
         });
     });
 };

@@ -4,8 +4,8 @@ const Vehicle = {
     create: (vehicle, callback) => {
         const sql = `
             INSERT INTO vehicles 
-            (registration_number, driver_name, phone, district)
-            VALUES (?, ?, ?, ?)
+            (registration_number, driver_name, phone, district, province)
+            VALUES (?, ?, ?, ?, ?)
         `;
 
         db.query(sql, [
@@ -13,6 +13,7 @@ const Vehicle = {
             vehicle.driver_name,
             vehicle.phone,
             vehicle.district,
+            vehicle.province
         ], callback);
     },
 
