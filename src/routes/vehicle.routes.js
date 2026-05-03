@@ -40,9 +40,6 @@ const filterByRole = require("../middlewares/dataFilter.middleware");
  *               phone:
  *                 type: string
  *                 example: 0712345678
- *               province:
- *                 type: string
- *                 example: Western
  *               district:
  *                 type: string
  *                 example: Colombo
