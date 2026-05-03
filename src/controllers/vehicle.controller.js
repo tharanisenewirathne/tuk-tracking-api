@@ -20,7 +20,9 @@ exports.createVehicle = (req, res) => {
         }
 
         res.status(201).json({
-            message: "Vehicle registered successfully"
+            message: "Vehicle registered successfully",
+            vehicle_id: result.insertId,
+            registration_number
         });
     });
 };
