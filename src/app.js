@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 
-require("./config/db");
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");

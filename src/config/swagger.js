@@ -10,7 +10,7 @@ const options = {
         },
         servers: [
             {
-                url: "http://localhost:3000"
+                url: process.env.BASE_URL || "http://localhost:3000"
             }
         ],
         components: {
@@ -26,6 +26,4 @@ const options = {
     apis: ["./src/routes/*.js"]
 };
 
-const swaggerSpec = swaggerJSDoc(options);
-
-module.exports = swaggerSpec;
+module.exports = swaggerJSDoc(options);
