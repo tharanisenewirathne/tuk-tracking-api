@@ -5,14 +5,14 @@ const Vehicle = {
         const sql = `
             INSERT INTO vehicles 
             (registration_number, driver_name, phone, district)
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?)
         `;
 
         db.query(sql, [
             vehicle.registration_number,
             vehicle.driver_name,
             vehicle.phone,
-            vehicle.district
+            vehicle.district,
         ], callback);
     },
 

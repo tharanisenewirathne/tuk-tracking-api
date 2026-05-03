@@ -29,7 +29,7 @@ const filterByRole = require("../middlewares/dataFilter.middleware");
  *         application/json:
  *           schema:
  *             type: object
- *             required: [registration_number, driver_name, phone, province, district]
+ *             required: [registration_number, driver_name, phone, district]
  *             properties:
  *               registration_number:
  *                 type: string
