@@ -33,7 +33,13 @@ router.post("/register", authController.register);
  * /api/auth/login:
  *   post:
  *     summary: Login user and get JWT token
- *     tags: [Auth]
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *     responses:
+ *       200:
+ *         description: JWT token returned
  */
 router.post("/login", authController.login);
 
