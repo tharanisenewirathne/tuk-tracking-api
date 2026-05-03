@@ -1,14 +1,13 @@
 {
   "name": "tuk-tracking-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://Tharani: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@github.com/tharanisenewirathne/tuk-tracking-api.git"
+    "url": "https://github.com/tharanisenewirathne/tuk-tracking-api.git"
   },
   "keywords": [],
   "author": "",
