@@ -15,7 +15,7 @@ const filterByRole = require("../middlewares/dataFilter.middleware");
  *   description: Tuk-Tuk vehicle management and tracking
  */
 
-/**
+ /**
  * @swagger
  * /api/vehicles:
  *   post:
@@ -29,17 +29,37 @@ const filterByRole = require("../middlewares/dataFilter.middleware");
  *         application/json:
  *           schema:
  *             type: object
- *             required: [registration_number, province, district]
+ *             required: [registration_number, driver_name, phone, province, district]
  *             properties:
  *               registration_number:
  *                 type: string
+ *                 example: TK-1001
+ *               driver_name:
+ *                 type: string
+ *                 example: Kamal Perera
+ *               phone:
+ *                 type: string
+ *                 example: 0712345678
  *               province:
  *                 type: string
+ *                 example: Western
  *               district:
  *                 type: string
+ *                 example: Colombo
  *     responses:
  *       201:
  *         description: Vehicle created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 vehicle_id:
+ *                   type: integer
+ *                 registration_number:
+ *                   type: string
  *       401:
  *         description: Unauthorized
  */
