@@ -4,8 +4,8 @@ const User = {
     create: (user, callback) => {
         const sql = `
             INSERT INTO users 
-            (username, password, role, province, district)
-            VALUES (?, ?, ?, ?, ?)
+            (username, password, role, province, district, police_station_name)
+            VALUES (?, ?, ?, ?, ?, ?)
         `;
 
         db.query(sql, [
@@ -13,7 +13,8 @@ const User = {
             user.password,
             user.role,
             user.province,
-            user.district
+            user.district,
+            user.police_station_name
         ], callback);
     },
 

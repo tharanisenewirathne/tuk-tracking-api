@@ -1,7 +1,7 @@
 require("dotenv").config();
 const db = require("../src/config/db");
 
-// Sri Lanka district → province mapping
+//Sri Lanka geo mapping
 const geoMap = {
     "Colombo": "Western",
     "Gampaha": "Western",
@@ -35,58 +35,129 @@ const geoMap = {
     "Ratnapura": "Sabaragamuwa"
 };
 
-// extract district list
 const districts = Object.keys(geoMap);
+const provinces = [...new Set(Object.values(geoMap))];
 
-// helpers
-function randomDistrict() {
-    return districts[Math.floor(Math.random() * districts.length)];
+// ------------------- HELPERS -------------------
+
+const randomPhone = () =>
+    `07${Math.floor(100000000 + Math.random() * 90000000)}`;
+
+const randomDriver = (i) => `Driver_${i}`;
+
+// ------------------- SEED FUNCTIONS -------------------
+
+async function seedProvinces() {
+    console.log("Seeding provinces...");
+
+    for (let p of provinces) {
+        await db.promise().query(
+            "INSERT INTO provinces (name) VALUES (?)",
+            [p]
+        );
+    }
+
+    console.log("Provinces seeded");
 }
 
-function randomPhone() {
-    return `07${Math.floor(100000000 + Math.random() * 90000000)}`;
+async function seedDistricts() {
+    console.log("Seeding districts...");
+
+    for (let d of districts) {
+        const province = geoMap[d];
+
+        await db.promise().query(
+            "INSERT INTO districts (name, province_id) VALUES (?, ?)",
+            [d, null] // simplified model
+        );
+    }
+
+    console.log("✔ Districts seeded");
 }
 
-function randomDriverName(i) {
-    return `Driver_${i}`;
+async function seedPoliceStations() {
+    console.log("Seeding police stations...");
+
+    //HQ
+    await db.promise().query(
+        "INSERT INTO police_stations (name, type) VALUES (?, ?)",
+        ["Sri Lanka Police HQ", "HQ"]
+    );
+
+    //Provincial HQs
+    for (let p of provinces) {
+        await db.promise().query(
+            "INSERT INTO police_stations (name, type, province)",
+            `VALUES (?, 'PROVINCE', ?)`,
+            [`${p} Provincial HQ`, p]
+        );
+    }
+
+    //District HQs + Stations
+    for (let d of districts) {
+        const province = geoMap[d];
+
+        // District HQ
+        await db.promise().query(
+            `INSERT INTO police_stations (name, type, province, district)
+             VALUES (?, 'DISTRICT', ?, ?)`,
+            [`${d} Police HQ`, province, d]
+        );
+
+        // Optional multiple stations per district (simulation)
+        for (let i = 1; i <= 3; i++) {
+            await db.promise().query(
+                `INSERT INTO police_stations (name, type, province, district)
+                 VALUES (?, 'STATION', ?, ?)`,
+                [`${d} Station ${i}`, province, d]
+            );
+        }
+    }
+
+    console.log("Police stations seeded");
 }
 
 async function seedVehicles() {
-    console.log("Seeding vehicles started...");
+    console.log("Seeding vehicles...");
 
     for (let i = 1; i <= 200; i++) {
-
-        const district = randomDistrict();
+        const district = districts[Math.floor(Math.random() * districts.length)];
         const province = geoMap[district];
 
-        const vehicle = {
-            reg: `TK-${1000 + i}`,
-            driver: randomDriverName(i),
-            phone: randomPhone(),
-            district,
-            province
-        };
-
-        const sql = `
-            INSERT INTO vehicles 
+        await db.promise().query(
+            `INSERT INTO vehicles 
             (registration_number, driver_name, phone, district, province)
-            VALUES (?, ?, ?, ?, ?)
-        `;
-
-        db.query(sql, [
-            vehicle.reg,
-            vehicle.driver,
-            vehicle.phone,
-            vehicle.district,
-            vehicle.province
-        ], (err) => {
-            if (err) {
-                console.error("Insert error:", err);
-            }
-        });
+            VALUES (?, ?, ?, ?, ?)`,
+            [
+                `TK-${1000 + i}`,
+                randomDriver(i),
+                randomPhone(),
+                district,
+                province
+            ]
+        );
     }
 
-    console.log("200 vehicles inserted successfully");
+    console.log("Vehicles seeded");
 }
 
-seedVehicles();
+// ------------------- RUN ALL -------------------
+
+async function seedAll() {
+    try {
+        console.log("SEEDING STARTED");
+
+        await seedProvinces();
+        await seedDistricts();
+        await seedPoliceStations();
+        await seedVehicles();
+
+        console.log("ALL DATA SEEDED SUCCESSFULLY");
+        process.exit();
+    } catch (err) {
+        console.error("Seeding failed:", err);
+        process.exit(1);
+    }
+}
+
+seedAll();
