@@ -1,27 +1,37 @@
-# Tuk-Tuk Tracking API 
+# 🚖 Tuk-Tuk Tracking API
 
 ## Overview
-A real-time tuk-tuk tracking system designed for Sri Lanka Police.
+A real-time tuk-tuk tracking and monitoring system designed for Sri Lanka Police.
+
+---
 
 ## Live API
 https://tuk-tracking-api-production.up.railway.app/
 
-## API Docs (Swagger)
+## Swagger API Docs
 https://tuk-tracking-api-production.up.railway.app/api-docs/
+
+---
 
 ## Features
 - JWT Authentication
-- Role-based access
-- Vehicle tracking
-- GPS simulation
+- Role-Based Access
+- Vehicle Registration & Management
+- GPS Location Tracking Simulation
+- Swagger API
+
+---
 
 ## Tech Stack
 - Node.js
-- Express
-- MySQL
-- Railway
+- Express.js
+- MySQL (Railway)
+- Swagger (OpenAPI)
+- Railway (Deployment)
 
-## Setup
+---
+
+## Setup (Local)
 ```bash
 npm install
 npm start
